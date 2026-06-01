@@ -15,7 +15,7 @@ class NotificationManager:
         self.config = Config
         self.history = []
     
-    def send_notification(self, title, message, signal=None, symbol=None, price=None, ema_short=None, ema_long=None):
+    def send_notification(self, title, message, signal=None, coin=None, price=None, ema_short=None, ema_long=None):
         """
         Tüm kanallara bildirim gönder
         
@@ -23,7 +23,7 @@ class NotificationManager:
             title: Başlık
             message: İçerik
             signal: AL/SAT/TUT
-            symbol: Kripto para sembolü
+            coin: Kripto para adı
             price: Mevcut fiyat
             ema_short: EMA 8 değeri
             ema_long: EMA 21 değeri
@@ -35,7 +35,7 @@ class NotificationManager:
             'title': title,
             'message': message,
             'signal': signal,
-            'symbol': symbol,
+            'coin': coin,
             'price': price,
             'ema_short': ema_short,
             'ema_long': ema_long
@@ -45,17 +45,17 @@ class NotificationManager:
         
         # Discord'a gönder
         if self.config.DISCORD_ENABLED:
-            self._send_discord(title, message, signal, symbol, price, ema_short, ema_long, timestamp)
+            self._send_discord(title, message, signal, coin, price, ema_short, ema_long, timestamp)
         
         # Telegram'a gönder
         if self.config.TELEGRAM_ENABLED:
-            self._send_telegram(title, message, signal, symbol, price, ema_short, ema_long, timestamp)
+            self._send_telegram(title, message, signal, coin, price, ema_short, ema_long, timestamp)
         
         # Desktop bildirimi
         if self.config.DESKTOP_NOTIFICATIONS_ENABLED:
             self._send_desktop(title, message)
     
-    def _send_discord(self, title, message, signal, symbol, price, ema_short, ema_long, timestamp):
+    def _send_discord(self, title, message, signal, coin, price, ema_short, ema_long, timestamp):
         """Discord webhook'a gönder"""
         if not self.config.DISCORD_WEBHOOK_URL:
             return
@@ -76,7 +76,7 @@ class NotificationManager:
                     "color": color,
                     "fields": [
                         {"name": "Signal", "value": signal or "N/A", "inline": True},
-                        {"name": "Symbol", "value": symbol or "N/A", "inline": True},
+                        {"name": "Coin", "value": (coin or "N/A").upper(), "inline": True},
                         {"name": "Price", "value": f"${price}" if price else "N/A", "inline": True},
                         {"name": "EMA 8", "value": str(ema_short) if ema_short else "N/A", "inline": True},
                         {"name": "EMA 21", "value": str(ema_long) if ema_long else "N/A", "inline": True},
@@ -91,7 +91,7 @@ class NotificationManager:
         except Exception as e:
             print(f"[Discord] Hata: {e}")
     
-    def _send_telegram(self, title, message, signal, symbol, price, ema_short, ema_long, timestamp):
+    def _send_telegram(self, title, message, signal, coin, price, ema_short, ema_long, timestamp):
         """Telegram'a gönder"""
         if not self.config.TELEGRAM_BOT_TOKEN or not self.config.TELEGRAM_CHAT_ID:
             return
@@ -106,7 +106,7 @@ class NotificationManager:
 {message}
 
 **Signal:** {signal or 'N/A'}
-**Symbol:** {symbol or 'N/A'}
+**Coin:** {(coin or 'N/A').upper()}
 **Price:** ${price if price else 'N/A'}
 **EMA 8:** {ema_short if ema_short else 'N/A'}
 **EMA 21:** {ema_long if ema_long else 'N/A'}
