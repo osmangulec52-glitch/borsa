@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kripto Trading Bot - EMA 8/21</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🤖 Kripto Trading Bot</h1>
+            <p>EMA 8/21 Kesişim Stratejisi</p>
+        </header>
+        
+        <div class="main-content">
+            <!-- Control Panel -->
+            <section class="control-panel">
+                <h2>Kontrol Paneli</h2>
+                <div class="controls">
+                    <button id="startBtn" class="btn btn-success">▶️ Bot'u Başlat</button>
+                    <button id="stopBtn" class="btn btn-danger">⏹️ Bot'u Durdur</button>
+                    <button id="testBtn" class="btn btn-info">📧 Test Bildirimi Gönder</button>
+                </div>
+                <div id="status" class="status">
+                    <p>Bot Durumu: <span id="statusText">Durduruludu</span></p>
+                    <p>Kontrol Aralığı: <span id="interval">60</span>s</p>
+                </div>
+            </section>
+            
+            <!-- Add Symbol -->
+            <section class="add-symbol">
+                <h2>Sembol Ekle</h2>
+                <div class="input-group">
+                    <input type="text" id="symbolInput" placeholder="Örn: BTCUSDT, ETHUSDT" maxlength="20">
+                    <select id="intervalSelect">
+                        <option value="1m">1 Dakika</option>
+                        <option value="5m">5 Dakika</option>
+                        <option value="15m">15 Dakika</option>
+                        <option value="1h">1 Saat</option>
+                        <option value="1d">1 Gün</option>
+                    </select>
+                    <button id="addBtn" class="btn btn-primary">➕ Ekle</button>
+                </div>
+            </section>
+            
+            <!-- Analysis Results -->
+            <section class="analysis-section">
+                <h2>Analiz Sonuçları</h2>
+                <div id="analysisContainer" class="analysis-container">
+                    <p class="no-data">Henüz sembol eklenmedi...</p>
+                </div>
+            </section>
+            
+            <!-- Notifications -->
+            <section class="notifications-section">
+                <h2>Bildirim Geçmişi</h2>
+                <div id="notificationsContainer" class="notifications-container">
+                    <p class="no-data">Henüz bildirim yok...</p>
+                </div>
+            </section>
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
